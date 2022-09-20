@@ -11,7 +11,7 @@ from rlcard.agents.dmc_agent import DMCTrainer
 def train(args):
 
     # Make the environment
-    env = rlcard.make(args.env)
+    env = rlcard.make(args.env, config={'game_num_players':3})
 
     # Initialize the DMC trainer
     trainer = DMCTrainer(
@@ -24,6 +24,7 @@ def train(args):
         num_actor_devices=args.num_actor_devices,
         num_actors=args.num_actors,
         training_device=args.training_device,
+        num_buffers=30,
     )
 
     # Train DMC Agents
