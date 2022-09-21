@@ -24,7 +24,7 @@ def train(args):
         num_actor_devices=args.num_actor_devices,
         num_actors=args.num_actors,
         training_device=args.training_device,
-        num_buffers=30,
+        num_buffers=50,
     )
 
     # Train DMC Agents

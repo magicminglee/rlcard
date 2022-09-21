@@ -29,6 +29,7 @@ def train(args):
         args.env,
         config={
             'seed': args.seed,
+            'game_num_players':3,
         }
     )
 
