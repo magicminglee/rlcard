@@ -29,8 +29,8 @@ class Action(Enum):
 pretrained_dir = 'experiments/dmc_result/nolimitholdem'
 device = torch.device('cpu')
 players = []
-for i in range(4):
-    model_path = os.path.join(pretrained_dir, str(i)+'_0.pth')
+for i in range(3):
+    model_path = os.path.join(pretrained_dir, str(i)+'_current.pth')
     agent = torch.load(model_path, map_location=device)
     agent.set_device(device)
     players.append(agent)
@@ -39,9 +39,6 @@ for i in range(4):
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        if (request.headers.get('Content-Type') != 'application/json'):
-            return 'Content-Type not supported!'
-
         print("/predict:", request.json)
         # Player postion
         player_position = request.json['player_position']
@@ -65,9 +62,8 @@ def predict():
         # The chips that this player has put in until now
         my_chips = request.json['my_chips']
         my_chips = int(my_chips)
-        # The chips that the number of chips the player has remained
+        # The chips that the number of chips the players has remained
         all_remained = request.json['all_remained']
-        all_remained = int(all_remained)
         # Game stage
         stage = request.json['stage']
         stage = int(stage)
@@ -95,7 +91,7 @@ def predict():
             print(action, info)
             print('--------------- DEBUG END --------------')
         ############## DEBUG ################
-        return jsonify({'status': 0, 'message': 'success'})
+        return jsonify({'status': 0, 'action': int(action), 'message': 'success'})
     except:
         import traceback
         traceback.print_exc()
@@ -107,4 +103,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='nolimitholdem backend')
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
-    app.run(host="localhost", port=6666, debug=args.debug)
+    app.run(host="0.0.0.0", port=6666, debug=args.debug)
